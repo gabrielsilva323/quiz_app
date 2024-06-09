@@ -3,10 +3,13 @@ import { trocartema, verificartema } from "../../helpers/tema-helper.js"
 const botaotema = document.querySelector(".tema button")
 const body = document.querySelector("body")
 const assunto = localStorage.getItem("assunto")
+const botaoJogarNovamente = document.querySelector("main button")
 
 botaotema.addEventListener("click", () => {
     trocartema(body, botaotema)
 })
+
+botaoJogarNovamente.addEventListener("click", JogarNovamente)
 
 verificartema(body, botaotema)
 
@@ -31,10 +34,17 @@ function inserirResultado() {
     sectionPontuacao.innerHTML =`
          ${divAssunto.outerHTML}
 
-        <strong>8</strong>
+        <strong>${pontos}</strong>
 
         <p>de 10</p>
         `
+}
+
+function JogarNovamente() {
+    localStorage.removeItem("pontos")
+    localStorage.removeItem("assunto")
+
+    window.location.href = "../../index.html"
 }
 
 inserirResultado()
