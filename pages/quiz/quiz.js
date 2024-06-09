@@ -99,7 +99,7 @@ function  montarPergunta() {
                 </label>
              </form>
             
-             <button>Enviar</button>
+             <button>Responder</button>
 
         </section>
         `
@@ -118,29 +118,55 @@ function alterarSinais(texto) {
 }
 
      function validarResposta() {
-       if (resposta === quiz.questions[pergunta-1].answer) {
+        const botaoEnviar = document.querySelector(".alternativas button")
+        botaoEnviar.innerText = "proxima"
+        botaoEnviar.removeEventListener("click", validarResposta)
+
+        if (pergunta === 10) {
+            botaoEnviar.innerText = "Finalizar"
+            botaoEnviar.addEventListener("click", fializar)
+        } else {
+            botaoEnviar.addEventListener("click",proximaPergunta)
+        }
+
+        if (resposta === quiz.questions[pergunta-1].answer) {
          document.querySelector(`label[for='${idInputResposta}']`).setAttribute("id", "correta")
          pontos = pontos + 1
         } else {
             document.querySelector(`label[for='${idInputResposta}']`).setAttribute("id", "errada")  
             document.querySelector(`label[for='${respostaCorretaid}']`).setAttribute("id", "correta")
         }
-    }
+    
+        pergunta = pergunta + 1        
+}
 
- async function iniciar () {
+      function Finalizar() {
+        localStorage.setItem("pontos", pontos)
+
+        window.location.href = "../resultado/resultado.html"
+      }
+
+      function proximaPergunta() {
+        montarPergunta()
+        adicionarEventoInput()
+}
+ 
+  function adicionarEventoInput() {
+    const inputResposta = document.querySelectorAll(".alternativas input")
+    inputResposta.forEach(input => {
+     input.addEventListener("click", guardarResposta)
+   
+       if (input.value === quiz.questions[pergunta-1].answer) {
+         respostaCorretaid.input.id
+       }
+    })
+  }
+
+    async function iniciar () {
     alterarAssunto()
    await buscarPerguntas()
     montarPergunta()
-
-   const inputResposta = document.querySelectorAll(".alternativas input")
-   inputResposta.forEach(input => {
-    input.addEventListener("click", guardarResposta)
-  
-      if (input.value === quiz.questions[pergunta-1].answer) {
-        respostaCorretaid.input.id
-      }
-   })
-
+    adicionarEventoInput()
 }
 
 iniciar()
