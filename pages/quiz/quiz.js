@@ -9,6 +9,7 @@ let pontos = 0
 let pergunta = 1
 let resposta = ""
 let idInputResposta = ""
+let respostaCorretaid = ""
 
 botaotema.addEventListener("click", () => {
     trocartema(body, botaotema)
@@ -62,7 +63,7 @@ function  montarPergunta() {
         <section class="alternativas">
             <form action="">
                 <label for="alternativa_a">
-                    <input type="radio" id="alternativa_a" name="alternativa"  values=" ${alterarSinais(quiz.questions[pergunta-1].options[0])}">
+                    <input type="radio" id="alternativa_a" name="alternativa"  values="${alterarSinais(quiz.questions[pergunta-1].options[0])}">
                 
                    <div>
                      <span>A</span>
@@ -112,8 +113,18 @@ function alterarSinais(texto) {
         resposta = evento.target.value
         idInputResposta = evento.target.id
 
-        console.log(resposta)
-        console.log(idInputResposta)
+        const botaoEnviar = document.querySelector(".alternativas button")
+        botaoEnviar.addEventListener("click", validarResposta)
+}
+
+     function validarResposta() {
+       if (resposta === quiz.questions[pergunta-1].answer) {
+         document.querySelector(`label[for='${idInputResposta}']`).setAttribute("id", "correta")
+         pontos = pontos + 1
+        } else {
+            document.querySelector(`label[for='${idInputResposta}']`).setAttribute("id", "errada")  
+            document.querySelector(`label[for='${respostaCorretaid}']`).setAttribute("id", "correta")
+        }
     }
 
  async function iniciar () {
@@ -124,6 +135,10 @@ function alterarSinais(texto) {
    const inputResposta = document.querySelectorAll(".alternativas input")
    inputResposta.forEach(input => {
     input.addEventListener("click", guardarResposta)
+  
+      if (input.value === quiz.questions[pergunta-1].answer) {
+        respostaCorretaid.input.id
+      }
    })
 
 }
